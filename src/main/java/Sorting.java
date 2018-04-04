@@ -32,7 +32,22 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] bubbleSort(final int[] array) {
-        return null;
+        if (array == null || array.length == 0) {
+            return null;
+        }
+        Boolean sorted = false;
+        while (!sorted) {
+            sorted = true;
+            for (int i = 1; i < array.length; i++) {
+                if (array[i - 1] > array[i]) {
+                    array[i - 1] ^= array[i];
+                    array[i] ^= array[i - 1];
+                    array[i - 1] ^= array[i];
+                    sorted = false;
+                }
+            }
+        }
+        return array;
     }
 
     /**
@@ -43,7 +58,32 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] selectionSort(final int[] array) {
-        return null;
+        return selectionSortHelper(array, 0, array.length - 1);
+    }
+
+    /**
+     *
+     * @param array checkstyle
+     * @param l checkstyle
+     * @param h checkstyle
+     * @return checkstyle
+     */
+    private static int[] selectionSortHelper(final int[] array, final int l, final int h) {
+        if (l < h) {
+            int index = l;
+            int value = array[l];
+            for (int i = l + 1; i <= h; i++) {
+                if (array[i] < value) {
+                    value = array[i];
+                    index = i;
+                }
+            }
+            array[l] ^= array[index];
+            array[index] ^= array[l];
+            array[l] ^= array[index];
+            return selectionSortHelper(array, l + 1, h);
+        }
+        return array;
     }
 
     /**
@@ -54,7 +94,12 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] mergeSort(final int[] array) {
-        return null;
+        if (array.length == 1) {
+            return array;
+        }
+        int[] array1 = Arrays.copyOfRange(array, 0, array.length / 2);
+        int[] array2 = Arrays.copyOfRange(array, array.length / 2, array.length);
+        return merge(mergeSort(array1), mergeSort(array2));
     }
 
     /**
@@ -176,7 +221,8 @@ public class Sorting {
         int whichAlgorithm;
         while (true) {
             System.out.println("Enter the sorting algorithm that you want to use"
-                    + " (1 for bubble sort, 2 for insertion sort, 3 for merge sort, 4 for built-in): ");
+                    + " (1 for bubble sort, 2 for insertion sort,"
+                    + "3 for merge sort, 4 for built-in): ");
             whichAlgorithm = userInput.nextInt();
             if (whichAlgorithm > 0 && whichAlgorithm < 5) {
                 break;
